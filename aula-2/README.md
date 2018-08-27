@@ -1,0 +1,22 @@
+Comandos realizados via shell durante a aula-2:
+
+- pwd;
+- ls;
+- mkdir aula-2;
+- cd aula-2;
+- touch README.md;
+- gedit README.md;
+- cp README.md README_copia.md;
+- ls -l;
+- ls -lt;
+- less README.md
+- curl http://ifconfig.co;
+- rm README_copia.md;
+- curl http://ifconfig.co/country;
+- curl http://ifconfig.co/city;
+- curl https://www.ufg.br/up/1/o/Marca_UFG.pdf -o marca.pdf;
+- rm -fr diretorio_teste;
+- tail -f README.md;
+- find . -name README.md;
+- find aula-2 -name *.md;
+- echo $?;
