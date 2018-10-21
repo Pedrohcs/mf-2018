@@ -5,34 +5,38 @@
     <meta charset="UTF-8" />
     <script type="text/javascript" src="http://code.jquery.com/jquery-1.8.3.min.js"></script>
     <style>
-        *{
-        font-family:"Century Gothic", Arial;
-        font-size:20px
-    }
-    input[type="text"]{
-        width:100%;
-        border:solid 1px
-    }
-     
-    ul{
-        padding:0;;
-        margin:0
-    }
-     
-    ul li{
-        list-style:none;
-        border:dashed 1px;
-        padding:5px
-    }
+        * {
+            font-family: "Century Gothic", Arial;
+            font-size: 20px
+        }
+
+        input[type="text"] {
+            width: 100%;
+            border: solid 1px
+        }
+
+        ul {
+            padding: 0;
+            ;
+            margin: 0
+        }
+
+        ul li {
+            list-style: none;
+            border: dashed 1px;
+            padding: 5px
+        }
     </style>
 </head>
 
 <body onload="loadInstituicao();">
-    Filtrar lista:<br />
+    Filtrar lista:
+    <br />
     <input type="text" id="txtBusca" placeholder="Digite aqui um valor para filtrar..." />
-    <table id="ulItens">
-    </table>
-    
+    <div id="tabela">
+        <table id="ulItens">
+        </table>
+    </div>
 </body>
 
 </html>
@@ -57,19 +61,39 @@
 
         var instituicao = [];
 
-        $.getJSON("instituicao.json", function (data) {
-            instituicao = data;
+        var arquivo = '';
 
-            console.log(data);
+        $(document).ready(function () {
+            $.ajax({
+                url: "nomeArquivo.txt",
+                dataType: "text",
+                success: function (data) {
+                    arquivo = data;
+                    $.getJSON(arquivo + ".json", function (data) {
+                        instituicao = data;
 
-            for (i = 0; i < instituicao.length; i++) {
+                        for (i = 0; i < instituicao.length; i++) {
 
-                saida += '<tr><td><a href="https://www.google.com/maps/search/?api=1&query=' + instituicao[i].latitude + ',' + instituicao[i].longitude + '">' + instituicao[i].codigo + ' ' + instituicao[i].razaoSocial + '</a></td></tr>';
+                            saida += '<tr><td><a href="https://www.google.com/maps/search/?api=1&query=' + instituicao[i].latitude + ',' + instituicao[i].longitude + '">' + instituicao[i].codigo + ' ' + instituicao[i].razaoSocial + '</a></td></tr>';
 
-            }
+                        }
 
-            document.getElementById('ulItens').innerHTML = saida;
+                        document.getElementById('ulItens').innerHTML = saida;
+                    });
+                }
+            });
         });
+
+
+
     }
 
 </script>
+
+<style>
+    #tabela {
+        width: 100%;
+        height: 300px;
+        overflow: scroll;
+    }
+</style>
