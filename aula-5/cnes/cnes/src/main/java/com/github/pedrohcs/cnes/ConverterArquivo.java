@@ -39,7 +39,15 @@ public class ConverterArquivo {
 	
 	private static void gerarArquivo(List<UnidadeMedica> lista, String nomeArquivo){
 		try {
-			FileWriter writer = new FileWriter(nomeArquivo+".json");
+	        try {
+	        	FileWriter writer = new FileWriter("../web-app/nomeArquivo.txt");
+	        	PrintWriter gravar = new PrintWriter(writer);
+	        	gravar.print(nomeArquivo);
+	        	writer.close();
+	        }catch(IOException e){
+				e.printStackTrace();
+			}
+			FileWriter writer = new FileWriter("../web-app/"+nomeArquivo+".json");
 			Gson gson = new Gson();
 			gson.toJson(lista, writer);
 			writer.close();
