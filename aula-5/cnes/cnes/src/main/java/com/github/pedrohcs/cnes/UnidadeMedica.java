@@ -10,7 +10,7 @@ public class UnidadeMedica {
 		return codigo;
 	}
 
-	public void setCodigo(String Codigo) {
+	public void setCodigo(String codigo) {
 		this.codigo = codigo;
 	}
 

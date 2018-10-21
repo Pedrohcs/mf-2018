@@ -29,5 +29,7 @@ public class Main
         File file = new File(agente.getNomeArquivo());
         
         DescompactarArquivo.unZip(file);
+        
+        ConverterArquivo.converter(nomeArquivoJson);
     }
 }

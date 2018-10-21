@@ -1,0 +1,70 @@
+<!DOCTYPE HTML>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8"/>
+    <script type="text/javascript" src="http://code.jquery.com/jquery-1.8.3.min.js"></script>
+    <style>
+    *{
+        font-family:"Century Gothic", Arial;
+        font-size:20px
+    }
+    input[type="text"]{
+        width:100%;
+        border:solid 1px
+    }
+     
+    ul{
+        padding:0;;
+        margin:0
+    }
+     
+    ul li{
+        list-style:none;
+        border:dashed 1px;
+        padding:5px
+    }
+    </style>
+</head>
+<body onload="loadInstituicao();">
+    Filtrar lista:<br/>
+    <input type="text" id="txtBusca" placeholder="Digite aqui um valor para filtrar..."/>
+    <table id="ulItens">
+    </table>
+</body>
+</html>
+
+<script type="text/javascript">
+
+    $(function(){
+        $("#txtBusca").keyup(function(){
+            var texto = $(this).val();
+            
+            $("#ulItens td").css("display", "block");
+            $("#ulItens td").each(function(){
+                if($(this).text().indexOf(texto) < 0)
+                $(this).css("display", "none");
+            });
+        });
+    });
+
+    function loadInstituicao() {
+    
+    var saida = '';
+    
+    var instituicao = [];
+    
+    $.getJSON("file:///C:/Users/pedro/Desktop/mf-2018/aula-5/cnes/cnes/instituicao.json", function(data) {
+        instituicao = data;
+
+        console.log(data);
+        
+        for (i = 0; i < instituicao.length; i++) {
+            saida += '<tr><td>' + instituicao.codigo + '</td>' + 
+                '<td>' + instituicao.razaoSocial + '</td></tr>';
+        }
+        
+        document.getElementById('ulItens').innerHTML = saida;
+    });
+    }
+
+</script>

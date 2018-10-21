@@ -2,25 +2,25 @@ package com.github.pedrohcs.cnes;
 
 import java.io.*;
 import java.util.*;
- 
-import org.json.simple.JSONObject;
+import com.google.gson.Gson;
 
 public class ConverterArquivo {
 	
-	public void converter() {
+	private final static String NOME_CSV = "tbEstabelecimento201808.csv";
+	
+	public static void converter(String nomeArquivo) {
 		List<UnidadeMedica> listaIns = new ArrayList<UnidadeMedica>();
 		try {
-			FileInputStream fis = new FileInputStream("BASE_DE_DADOS_CNES_201808\\tbEstabelecimento201808.csv");
+			FileInputStream fis = new FileInputStream(NOME_CSV);
 			InputStreamReader isr = new InputStreamReader(fis, "UTF-8");
 			BufferedReader br = new BufferedReader(isr);
-			FileWriter writeFile = null;
 			String linha;
 			while ((linha = br.readLine()) != null) {
 				
 				String [] dados = linha.split(";");
 				
 				UnidadeMedica ins = new UnidadeMedica();
-				ins.setCodigo(dados[0].replaceAll("\"", ""));
+				ins.setCodigo(dados[1].replaceAll("\"", ""));
 				ins.setRazaoSocial(dados[5].replaceAll("\"", ""));
 				ins.setLatitude(dados[39].replaceAll("\"", ""));
 				ins.setLongitude(dados[40].replaceAll("\"", ""));
@@ -28,33 +28,24 @@ public class ConverterArquivo {
 				listaIns.add(ins);
 			}
 		
-		
-		int contador = 0;
-		try {
-			writeFile = new FileWriter("isntituicao.json");
-			while(contador < listaIns.size()) {
-				JSONObject jsonObject = new JSONObject();
-				jsonObject.put("codigo", listaIns.get(contador).getCodigo());
-				jsonObject.put("razaoSocial", listaIns.get(contador).getRazaoSocial());
-				jsonObject.put("latitude", listaIns.get(contador).getLatitude());
-				jsonObject.put("longitude", listaIns.get(contador).getLongitude());
-		            
-	            //Escreve no arquivo conteudo do Objeto JSON
-	            writeFile.write(jsonObject.toJSONString()+"\n");
-	            contador ++;
-			}
-            writeFile.close();
-		    }
-		catch(IOException e){
-			e.printStackTrace();
-			}
-				
+			gerarArquivo(listaIns, nomeArquivo);	
 			
-
 		br.close();
 		}catch(IOException e){
 			e.printStackTrace();
 		}
 
+	}
+	
+	private static void gerarArquivo(List<UnidadeMedica> lista, String nomeArquivo){
+		try {
+			FileWriter writer = new FileWriter(nomeArquivo+".json");
+			Gson gson = new Gson();
+			gson.toJson(lista, writer);
+			writer.close();
+		}catch(IOException e){
+			e.printStackTrace();
+		}
+		
 	}
 }
