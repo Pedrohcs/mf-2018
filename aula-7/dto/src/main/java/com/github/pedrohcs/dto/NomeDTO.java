@@ -1,5 +1,13 @@
 package com.github.pedrohcs.dto;
 
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.IOException;
+
+import org.json.simple.JSONObject;
+import org.json.simple.parser.JSONParser;
+
 public class NomeDTO {
 
 	private char[] id = new char[36];
@@ -58,6 +66,61 @@ public class NomeDTO {
 	}
 	public void setUsoCondicional(int usoCondicional) {
 		this.usoCondicional = usoCondicional;
+	}
+	
+	public void toJson() {
+		JSONObject jsonObject = new JSONObject();
+		FileWriter writeFile = null;
+
+		jsonObject.put("id", "\"" + this.id + "\"");
+		jsonObject.put("individuo", "\"" + this.individuo + "\"");
+		jsonObject.put("titulos", "\"" + this.titulos + "\"");
+		jsonObject.put("nomes", "\"" + this.nomes + "\"");
+		jsonObject.put("sobrenomes", "\"" + this.sobrenomes + "\"");
+		jsonObject.put("sufixos", "\"" + this.sufixos + "\"");
+		jsonObject.put("preferidos", "\"" + this.preferidos + "\"");
+		jsonObject.put("usoCondicional", "\"" + this.usoCondicional + "\"");
+
+		try {
+			writeFile = new FileWriter("NomeDTO.json");
+			writeFile.write(jsonObject.toJSONString());
+			writeFile.close();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
+
+	public void fromJson() throws org.json.simple.parser.ParseException {
+		JSONObject jsonObject;
+		JSONParser parser = new JSONParser();
+
+		String id;
+		String individuo;
+		String preferidos;
+		String usoCondicional;
+
+		try {
+			jsonObject = (JSONObject) parser.parse(new FileReader("NomeDTO.json"));
+
+			id = (String) jsonObject.get("id");
+			individuo = (String) jsonObject.get("individuo");
+			this.titulos = (String) jsonObject.get("titulos");
+			this.nomes = (String) jsonObject.get("nomes");
+			this.sobrenomes = (String) jsonObject.get("sobrenomes");
+			this.sufixos = (String) jsonObject.get("sufixos");
+			preferidos = (String) jsonObject.get("preferidos");
+			usoCondicional = (String) jsonObject.get("usoCondicional");
+
+			this.id = id.toCharArray();
+			this.individuo = individuo.toCharArray();
+			this.preferidos = Integer.parseInt(preferidos);
+			this.usoCondicional = Integer.parseInt(usoCondicional);
+
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 	}
 	
 }

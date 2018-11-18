@@ -8,33 +8,26 @@ import java.io.IOException;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 
-public class NomePreferidoDTO {
+public class IndividuoDTO {
 
-	private int codigo;
-	private String descricao;
-	
-	public int getCodigo() {
-		return codigo;
+	private char[] id = new char[36];
+
+	public char[] getId() {
+		return id;
 	}
-	public void setCodigo(int codigo) {
-		this.codigo = codigo;
-	}
-	public String getDescricao() {
-		return descricao;
-	}
-	public void setDescricao(String descricao) {
-		this.descricao = descricao;
+
+	public void setId(char[] id) {
+		this.id = id;
 	}
 	
 	public void toJson() {
 		JSONObject jsonObject = new JSONObject();
 		FileWriter writeFile = null;
 
-		jsonObject.put("codigo", "\"" + this.codigo + "\"");
-		jsonObject.put("descricao", "\"" + this.descricao + "\"");
+		jsonObject.put("id", "\"" + this.id + "\"");
 
 		try {
-			writeFile = new FileWriter("NomePreferidoDTO.json");
+			writeFile = new FileWriter("IndividuoDTO.json");
 			writeFile.write(jsonObject.toJSONString());
 			writeFile.close();
 		} catch (IOException e) {
@@ -46,15 +39,14 @@ public class NomePreferidoDTO {
 		JSONObject jsonObject;
 		JSONParser parser = new JSONParser();
 
-		String codigo;
+		String id;
 
 		try {
-			jsonObject = (JSONObject) parser.parse(new FileReader("NomePreferidoDTO.json"));
+			jsonObject = (JSONObject) parser.parse(new FileReader("IndividuoDTO.json"));
 
-			codigo = (String) jsonObject.get("codigo");
-			this.descricao = (String) jsonObject.get("descricao");
+			id = (String) jsonObject.get("id");
 
-			this.codigo = Integer.parseInt(codigo);
+			this.id = id.toCharArray();
 
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
@@ -62,4 +54,5 @@ public class NomePreferidoDTO {
 			e.printStackTrace();
 		}
 	}
+	
 }

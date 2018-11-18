@@ -1,5 +1,13 @@
 package com.github.pedrohcs.dto;
 
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.IOException;
+
+import org.json.simple.JSONObject;
+import org.json.simple.parser.JSONParser;
+
 public class SexoDTO {
 
 	private int codigo;
@@ -23,6 +31,47 @@ public class SexoDTO {
 	}
 	public void setAlternativo(char[] alternativo) {
 		this.alternativo = alternativo;
+	}
+	
+	public void toJson() {
+		JSONObject jsonObject = new JSONObject();
+		FileWriter writeFile = null;
+
+		jsonObject.put("codigo", "\"" + this.codigo + "\"");
+		jsonObject.put("descricao", "\"" + this.descricao + "\"");
+		jsonObject.put("aternativo", "\"" + this.alternativo + "\"");
+
+		try {
+			writeFile = new FileWriter("SexoDTO.json");
+			writeFile.write(jsonObject.toJSONString());
+			writeFile.close();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
+
+	public void fromJson() throws org.json.simple.parser.ParseException {
+		JSONObject jsonObject;
+		JSONParser parser = new JSONParser();
+
+		String codigo;
+		String alternativo;
+
+		try {
+			jsonObject = (JSONObject) parser.parse(new FileReader("SexoDTO.json"));
+
+			codigo = (String) jsonObject.get("codigo");
+			this.descricao = (String) jsonObject.get("descricao");
+			alternativo = (String) jsonObject.get("alternativo");
+
+			this.codigo = Integer.parseInt(codigo);
+			this.alternativo = alternativo.toCharArray();
+
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 	}
 	
 }
